@@ -32,7 +32,7 @@ def create_database(database_name: str, params: dict) -> None:
                 CREATE TABLE vacancies (
                     vacancy_id integer PRIMARY KEY,
                     name varchar(100),
-                    salary integer NOT NULL,
+                    salary integer,
                     url varchar(100),
                     schedule varchar(50),
                     created_at varchar(30),

@@ -71,4 +71,5 @@ if __name__ == "__main__":
     print(emp_1_a)
 
     vac_1_a = get_vacancies("2853703")
-    print(vac_1_a)
+    for vac in vac_1_a:
+        print(vac)
