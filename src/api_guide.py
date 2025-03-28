@@ -49,8 +49,8 @@ def get_vacancies(employer_id: str) -> list | None:
                 'name': vacancy.get('name'),
                 'salary': vacancy.get('salary', {}).get('from', 0.0),
                 'url': vacancy.get('url'),
-                'employment': vacancy.get('employment', {}).get('name'),
                 'schedule': vacancy.get('schedule', {}).get('name'),
+                'created_at': vacancy.get('created_at'),
                 'employer': vacancy.get('employer', {}).get('name'),
                 'employer_id': vacancy.get('employer', {}).get('id')
             }
