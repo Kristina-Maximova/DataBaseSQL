@@ -2,7 +2,7 @@ from config import config
 import psycopg2
 
 
-class DBManager():
+class DBManager:
     """ Класс для работы с таблицами в базе данных postgres"""
 
     def __init__(self, database_name: str, params: dict, ):
