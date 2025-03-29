@@ -48,7 +48,8 @@ class Vacancy:
                 "employer": self.employer,
                 "employer_id": self.employer_id}
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     my_employers_id = ["10122709", "9917029", "2398387",
                        "584898", "11075933", "6113620",
                        "2866992", "864086", "2853703",

@@ -1,5 +1,6 @@
-from config import config
 import psycopg2
+
+from config import config
 
 
 def create_database(database_name: str, params: dict) -> None:
@@ -41,15 +42,6 @@ def create_database(database_name: str, params: dict) -> None:
                 """)
     finally:
         conn.close()
-
-
-
-
-
-
-
-
-
 
 
 if __name__ == "__main__":

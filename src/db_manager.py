@@ -1,4 +1,3 @@
-from config import config
 import psycopg2
 
 
@@ -15,6 +14,7 @@ class DBManager:
          и количества вакансий у каждой компании"""
         try:
             with self.conn:
+                self.cur = self.conn.cursor()
                 with self.cur as cur:
                     cur.execute("""
                     SELECT DISTINCT e.name, COUNT(v.*) as vacancies_count
@@ -23,8 +23,8 @@ class DBManager:
                     GROUP BY e.employer_id
                     ORDER BY vacancies_count DESC;
                     """)
-                    data = self.cur.fetchall()   # [('X5 Digital', 20), ('ФГБУ ЦСП ФМБА России', 20),..., ('Trafficsoft', 3)]
-                    data_in_dict = [{"employer":d[0], "vacancies_count":d[1]} for d in data]
+                    data = self.cur.fetchall()
+                    data_in_dict = [{"employer": d[0], "vacancies_count": d[1]} for d in data]
                     return data_in_dict
         finally:
             self.conn.close()
@@ -33,18 +33,23 @@ class DBManager:
         """ Метод для получения списка всех вакансий """
         try:
             with self.conn:
+                self.cur = self.conn.cursor()
                 with self.cur as cur:
                     cur.execute("""
-                    SELECT e.name, v.name, v.salary, v.url
+                    SELECT v.*
                     FROM vacancies v
                     FULL JOIN employers e USING(employer_id);
                     """)
                     data = self.cur.fetchall()
-                    vacancies_in_dict = [{"employer" : d[0],
-                                     "name" : d[1],
-                                     "salary" : d[2],
-                                     "url" : d[3]}
-                                     for d in data]
+                    vacancies_in_dict = [{"vacancy_id": d[0],
+                                          "name": d[1],
+                                          "salary": d[2],
+                                          "url": d[3],
+                                          "schedule": d[4],
+                                          "created_at": d[5],
+                                          "employer": d[6],
+                                          "employer_id": d[7]}
+                                         for d in data]
                     return vacancies_in_dict
         finally:
             self.conn.close()
@@ -53,6 +58,7 @@ class DBManager:
         """ Метод для получения средней зарплаты по вакансиям"""
         try:
             with self.conn:
+                self.cur = self.conn.cursor()
                 with self.cur as cur:
                     cur.execute("""
                     SELECT AVG(v.salary)::real as average_salary
@@ -69,41 +75,50 @@ class DBManager:
         у которых зарплата выше среднего значения по всем вакансиям"""
         try:
             with self.conn:
+                self.cur = self.conn.cursor()
                 with self.cur as cur:
                     cur.execute("""
-                    SELECT v.employer, v.name, v.salary, v.url
+                    SELECT v.*
                     FROM vacancies v
                     WHERE  v.salary > (SELECT AVG(v.salary)::real FROM vacancies v 
                     WHERE v.salary IS NOT NULL)
                     ORDER BY v.salary DESC;
                     """)
                     data = self.cur.fetchall()
-                    vacancies_in_dict = [{"employer": d[0],
+                    vacancies_in_dict = [{"vacancy_id": d[0],
                                           "name": d[1],
                                           "salary": d[2],
-                                          "url": d[3]}
+                                          "url": d[3],
+                                          "schedule": d[4],
+                                          "created_at": d[5],
+                                          "employer": d[6],
+                                          "employer_id": d[7]}
                                          for d in data]
                     return vacancies_in_dict
         finally:
             self.conn.close()
-
 
     def get_vacancies_with_keyword(self, keyword: str) -> list[dict] | None:
         """ Метод для получения вакансий
         по ключевому слову в названии """
         try:
             with self.conn:
+                self.cur = self.conn.cursor()
                 with self.cur as cur:
                     cur.execute(f"""
-                    SELECT v.employer, v.name, v.salary, v.url
+                    SELECT v.*
                     FROM vacancies v
                     WHERE v.name LIKE '%{keyword}%';
                     """)
                     data = self.cur.fetchall()
-                    vacancies_in_dict = [{"employer": d[0],
+                    vacancies_in_dict = [{"vacancy_id": d[0],
                                           "name": d[1],
                                           "salary": d[2],
-                                          "url": d[3]}
+                                          "url": d[3],
+                                          "schedule": d[4],
+                                          "created_at": d[5],
+                                          "employer": d[6],
+                                          "employer_id": d[7]}
                                          for d in data]
                     return vacancies_in_dict
         finally:

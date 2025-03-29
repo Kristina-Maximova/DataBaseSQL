@@ -2,6 +2,7 @@ from configparser import ConfigParser
 
 
 def config(filename="..//database.ini", section="postgresql"):
+    """ Функция для получения приватных данных"""
     # create a parser
     parser = ConfigParser()
     # read config file

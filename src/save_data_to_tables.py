@@ -1,6 +1,5 @@
 from typing import Any
 
-from config import config
 import psycopg2
 
 
@@ -57,6 +56,5 @@ def save_vacancies_data(data: list[dict[str, Any]],
     finally:
         conn.close()
 
-
-if __name__ == "__main__":
-    database_name = "hh_vacancies"
+# if __name__ == "__main__":
+#     database_name = "hh_vacancies"
