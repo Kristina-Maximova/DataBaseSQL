@@ -105,11 +105,11 @@ class DBManager:
             with self.conn:
                 self.cur = self.conn.cursor()
                 with self.cur as cur:
-                    cur.execute(f"""
+                    cur.execute("""
                     SELECT v.*
                     FROM vacancies v
-                    WHERE v.name LIKE '%{keyword}%';
-                    """)
+                    WHERE v.name LIKE %s;
+                    """, ("%"+keyword+'%',))
                     data = self.cur.fetchall()
                     vacancies_in_dict = [{"vacancy_id": d[0],
                                           "name": d[1],

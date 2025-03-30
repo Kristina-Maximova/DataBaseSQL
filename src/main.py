@@ -52,12 +52,10 @@ def main() -> None:
     vacancies_list = Vacancy.cast_to_object_list(user_vacancies)
     print(f"Сейчас вакансий в списке: {len(vacancies_list)}")
     if vacancies_list:
-        if len(vacancies_list) >= int(user_settings['top_n']):
-            for vac in vacancies_list[0:int(user_settings['top_n'])]:
-                print(vac)
-        elif len(vacancies_list) < int(user_settings['top_n']):
-            for vac in range(len(vacancies_list)):
-                print(vac)
+        need_for_top = int(user_settings['top_n'])
+        vac_to_show = vacancies_list[:need_for_top]
+        for vac in vac_to_show:
+            print(vac)
     else:
         print("Не найдено вакансий по заданным условиям")
 
